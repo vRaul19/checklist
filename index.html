@@ -4,30 +4,90 @@
   <meta charset="UTF-8" />
   <title>Checklist Schimb de Tură</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
-    label { display: block; margin-bottom: 10px; }
-    button { padding: 10px 20px; }
-    #mesajConfirmare { margin-top: 15px; color: green; font-weight: bold; }
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    #question-container {
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+    #mesajConfirmare {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <h1>Checklist Schimb de Tură</h1>
+
   <form id="checklistForm">
-    <label><input type="checkbox" name="informatii" value="Da"> S-a făcut schimbul de informații?</label>
-    <label><input type="checkbox" name="ordine" value="Da"> Au rămas Ordere de Producție deschise?</label>
-    <label><input type="checkbox" name="layout" value="Da"> Se respectă layout-ul?</label>
-    <label><input type="checkbox" name="5s" value="Da"> 5S este OK?</label>
-    <label><input type="checkbox" name="utilaje" value="Da"> Utilajele sunt în stare de funcționare?</label>
-    <br>
-    <button type="submit">Trimite</button>
+    <div id="question-container">
+      <p id="intrebare"></p>
+      <label><input type="radio" name="raspuns" value="Da" required> Da</label>
+      <label><input type="radio" name="raspuns" value="Nu"> Nu</label>
+    </div>
+    <button type="button" id="urmator">Următoarea întrebare</button>
+    <button type="submit" id="trimite" style="display:none;">Trimite</button>
   </form>
+
   <p id="mesajConfirmare"></p>
 
   <script>
+    const intrebari = [
+      { nume: 'informatii', text: 'S-a făcut schimbul de informații?' },
+      { nume: 'ordine', text: 'Au rămas Ordere de Producție deschise?' },
+      { nume: 'layout', text: 'Se respectă layout-ul?' },
+      { nume: '5s', text: '5S este OK?' },
+      { nume: 'utilaje', text: 'Utilajele sunt în stare de funcționare?' }
+    ];
+
+    let index = 0;
+    const raspunsuri = {};
+    const intrebare = document.getElementById('intrebare');
     const form = document.getElementById('checklistForm');
+    const urmator = document.getElementById('urmator');
+    const trimite = document.getElementById('trimite');
+    const radioButtons = form.querySelectorAll('input[name="raspuns"]');
+
+    function afiseazaIntrebare() {
+      const curenta = intrebari[index];
+      intrebare.textContent = curenta.text;
+      radioButtons.forEach(rb => rb.checked = false);
+    }
+
+    afiseazaIntrebare();
+
+    urmator.addEventListener('click', () => {
+      const checked = form.querySelector('input[name="raspuns"]:checked');
+      if (!checked) return alert('Selectează un răspuns!');
+
+      raspunsuri[intrebari[index].nume] = checked.value;
+      index++;
+
+      if (index < intrebari.length) {
+        afiseazaIntrebare();
+      } else {
+        urmator.style.display = 'none';
+        trimite.style.display = 'inline-block';
+        intrebare.textContent = "Gata! Trimite răspunsurile.";
+        form.querySelectorAll('label').forEach(label => label.style.display = 'none');
+      }
+    });
+
     form.addEventListener('submit', e => {
       e.preventDefault();
-      const data = new FormData(form);
+      const data = new FormData();
+      for (const cheie in raspunsuri) {
+        data.append(cheie, raspunsuri[cheie]);
+      }
+
       fetch('https://script.google.com/macros/s/AKfycbwyAgCqke7xFw7kpgra9Y7111EeDKhd3rTrvvvshBQNbo9afRlqQI5Rs2eLYLZ7lOhW/exec', {
         method: 'POST',
         body: data
@@ -35,7 +95,7 @@
       .then(response => response.text())
       .then(text => {
         document.getElementById('mesajConfirmare').innerText = "Checklist trimis cu succes!";
-        form.reset();
+        form.style.display = 'none';
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
