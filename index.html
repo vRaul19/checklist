@@ -21,6 +21,31 @@
       font-size: 1rem;
       margin-top: 10px;
     }
+    .buton-raspuns {
+      padding: 1rem;
+      margin: 0.5rem 1rem 1rem 0;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 40%;
+      min-width: 100px;
+      transition: transform 0.1s ease-in-out;
+    }
+    .buton-raspuns:hover {
+      transform: scale(1.05);
+    }
+    .verde {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .rosu {
+      background-color: #f44336;
+      color: white;
+    }
+    .buton-raspuns.selected {
+      outline: 3px solid #000;
+    }
     #mesajConfirmare {
       margin-top: 15px;
       color: green;
@@ -51,8 +76,10 @@
     <!-- Întrebări -->
     <div id="question-container" style="display:none;">
       <p id="intrebare"></p>
-      <label><input type="radio" name="raspuns" value="Da" required> Da</label>
-      <label><input type="radio" name="raspuns" value="Nu"> Nu</label>
+      <div id="raspunsuri">
+        <button type="button" class="buton-raspuns verde" data-valoare="Da">DA</button>
+        <button type="button" class="buton-raspuns rosu" data-valoare="Nu">NU</button>
+      </div>
     </div>
 
     <!-- Observații -->
@@ -77,6 +104,7 @@
     ];
 
     let index = 0;
+    let raspunsSelectat = null;
     const raspunsuri = {};
     const form = document.getElementById('checklistForm');
     const introFields = document.getElementById('introFields');
@@ -89,7 +117,8 @@
     function afiseazaIntrebare() {
       const curenta = intrebari[index];
       intrebare.textContent = curenta.text;
-      form.querySelectorAll('input[name="raspuns"]').forEach(rb => rb.checked = false);
+      raspunsSelectat = null;
+      document.querySelectorAll('.buton-raspuns').forEach(b => b.classList.remove('selected'));
     }
 
     document.getElementById('startChecklist').addEventListener('click', () => {
@@ -111,11 +140,18 @@
       afiseazaIntrebare();
     });
 
-    urmator.addEventListener('click', () => {
-      const checked = form.querySelector('input[name="raspuns"]:checked');
-      if (!checked) return alert('Selectează un răspuns!');
+    document.querySelectorAll('.buton-raspuns').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.buton-raspuns').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        raspunsSelectat = btn.dataset.valoare;
+      });
+    });
 
-      raspunsuri[intrebari[index].nume] = checked.value;
+    urmator.addEventListener('click', () => {
+      if (!raspunsSelectat) return alert('Selectează un răspuns!');
+      
+      raspunsuri[intrebari[index].nume] = raspunsSelectat;
       index++;
 
       if (index < intrebari.length) {
