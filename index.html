@@ -24,25 +24,13 @@
     </div>
 
     <div class="step">
-      <label>3. Echipamentele sunt OK?</label><br>
+      <label>3. Sunt echipamentele în stare bună de funcționare?</label><br>
       <input type="radio" name="echipamente_ok" value="Da" required> Da<br>
       <input type="radio" name="echipamente_ok" value="Nu"> Nu<br>
     </div>
 
     <div class="step">
-      <label>4. S-a făcut schimbul de informații?</label><br>
-      <input type="radio" name="informatii_schimb" value="Da" required> Da<br>
-      <input type="radio" name="informatii_schimb" value="Nu"> Nu<br>
-    </div>
-
-    <div class="step">
-      <label>5. S-au ridicat ambalajele?</label><br>
-      <input type="radio" name="ambalaje_ridicate" value="Da" required> Da<br>
-      <input type="radio" name="ambalaje_ridicate" value="Nu"> Nu<br>
-    </div>
-
-    <div class="step">
-      <label>6. Observații:</label><br>
+      <label>4. Observații:</label><br>
       <textarea name="observatii" rows="4" cols="40"></textarea><br>
     </div>
 
@@ -78,12 +66,15 @@
     document.getElementById("checklistForm").onsubmit = async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
-      const query = new URLSearchParams([...formData.entries()]).toString();
 
-      const response = await fetch("https://script.google.com/macros/s/AKfycbyoZAE3rChZ1KcOC_P-kUaqpyw9hrsHNV7hMFZIg-8c_umuXlK7Dcp8ae6_gE4AJcff/exec?"+query);
+     const response = await fetch('https://script.google.com/macros/s/AKfycbxGLd63FPnQUfgZDuQOSCobcv2HHvepVVVwX-v05ijUWEedl0dDAb4anqbzqaPcyaz7/exec', {
+                method: 'POST',
+                body: formData
+            });
+
       const data = await response.json();
       alert(data.result);
-      window.location.reload();
+      window.location.reload(); // opțional: resetare după trimitere
     };
   </script>
 
