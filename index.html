@@ -80,7 +80,7 @@
       const formData = new FormData(e.target);
       const query = new URLSearchParams([...formData.entries()]).toString();
 
-      const response = await fetch("https://script.google.com/macros/s/AKfycby2p-Ot8WO-5CBOeBueBr_lQsjvn9ZO4_EQP_tZf2140Hkf99HTfHo_bm7iAAiOUXle/exec?"+query);
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyoZAE3rChZ1KcOC_P-kUaqpyw9hrsHNV7hMFZIg-8c_umuXlK7Dcp8ae6_gE4AJcff/exec?"+query);
       const data = await response.json();
       alert(data.result);
       window.location.reload();
