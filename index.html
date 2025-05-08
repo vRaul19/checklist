@@ -10,14 +10,16 @@
       margin: 2rem auto;
       padding: 1rem;
     }
-    label, input, select {
+    label, input, select, textarea {
       display: block;
       margin-bottom: 15px;
       font-size: 1rem;
+      width: 100%;
     }
     button {
       padding: 10px 20px;
       font-size: 1rem;
+      margin-top: 10px;
     }
     #mesajConfirmare {
       margin-top: 15px;
@@ -30,27 +32,33 @@
   <h1>Checklist Schimb de Tură</h1>
 
   <form id="checklistForm">
+    <!-- Introducere -->
     <div id="introFields">
-      <label>
-        Nume:
-        <input type="text" name="nume" id="nume" required />
-      </label>
-      <label>
-        Tura:
-        <select name="tura" id="tura" required>
-          <option value="">Selectează</option>
-          <option value="Tura 1">Tura 1</option>
-          <option value="Tura 2">Tura 2</option>
-          <option value="Tura 3">Tura 3</option>
-        </select>
-      </label>
+      <label for="nume">Nume:</label>
+      <input type="text" name="nume" id="nume" required />
+
+      <label for="tura">Tura:</label>
+      <select name="tura" id="tura" required>
+        <option value="">Selectează tura</option>
+        <option value="Tura 1">Tura 1</option>
+        <option value="Tura 2">Tura 2</option>
+        <option value="Tura 3">Tura 3</option>
+      </select>
+
       <button type="button" id="startChecklist">Începe Checklist-ul</button>
     </div>
 
+    <!-- Întrebări -->
     <div id="question-container" style="display:none;">
       <p id="intrebare"></p>
       <label><input type="radio" name="raspuns" value="Da" required> Da</label>
       <label><input type="radio" name="raspuns" value="Nu"> Nu</label>
+    </div>
+
+    <!-- Observații -->
+    <div id="comentariiContainer" style="display:none;">
+      <label for="comentarii">Observații / Comentarii suplimentare:</label>
+      <textarea name="comentarii" id="comentarii" rows="4"></textarea>
     </div>
 
     <button type="button" id="urmator" style="display:none;">Următoarea întrebare</button>
@@ -73,6 +81,7 @@
     const form = document.getElementById('checklistForm');
     const introFields = document.getElementById('introFields');
     const questionContainer = document.getElementById('question-container');
+    const comentariiContainer = document.getElementById('comentariiContainer');
     const urmator = document.getElementById('urmator');
     const trimite = document.getElementById('trimite');
     const intrebare = document.getElementById('intrebare');
@@ -112,25 +121,24 @@
       if (index < intrebari.length) {
         afiseazaIntrebare();
       } else {
+        questionContainer.style.display = 'none';
+        comentariiContainer.style.display = 'block';
         urmator.style.display = 'none';
         trimite.style.display = 'inline-block';
-        intrebare.textContent = "Gata! Trimite răspunsurile.";
-        form.querySelectorAll('label').forEach(label => {
-          if (label.querySelector('input[name="raspuns"]')) {
-            label.style.display = 'none';
-          }
-        });
       }
     });
 
     form.addEventListener('submit', e => {
       e.preventDefault();
+      const comentarii = document.getElementById('comentarii').value.trim();
+      raspunsuri['comentarii'] = comentarii;
+
       const data = new FormData();
       for (const cheie in raspunsuri) {
         data.append(cheie, raspunsuri[cheie]);
       }
 
-      fetch('https://script.google.com/macros/s/AKfycbz0A60XmSOmIvbCymp_jS8XVmAAsbjqSePqHmQVF0ML3p4u-yJ-GuNDV-G1dZMWwPjH/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbziJNyfnrDJDgT9f03pWeWgit34pmheXiMv1kJqhYnTcpS3EDfqIR5RDeC7dhNP4VYr/exec', {
         method: 'POST',
         body: data
       })
