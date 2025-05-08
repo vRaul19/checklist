@@ -10,8 +10,10 @@
       margin: 2rem auto;
       padding: 1rem;
     }
-    #question-container {
-      margin-bottom: 20px;
+    label, input, select {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 1rem;
     }
     button {
       padding: 10px 20px;
@@ -28,12 +30,30 @@
   <h1>Checklist Schimb de Tură</h1>
 
   <form id="checklistForm">
-    <div id="question-container">
+    <div id="introFields">
+      <label>
+        Nume:
+        <input type="text" name="nume" id="nume" required />
+      </label>
+      <label>
+        Tura:
+        <select name="tura" id="tura" required>
+          <option value="">Selectează</option>
+          <option value="Tura 1">Tura 1</option>
+          <option value="Tura 2">Tura 2</option>
+          <option value="Tura 3">Tura 3</option>
+        </select>
+      </label>
+      <button type="button" id="startChecklist">Începe Checklist-ul</button>
+    </div>
+
+    <div id="question-container" style="display:none;">
       <p id="intrebare"></p>
       <label><input type="radio" name="raspuns" value="Da" required> Da</label>
       <label><input type="radio" name="raspuns" value="Nu"> Nu</label>
     </div>
-    <button type="button" id="urmator">Următoarea întrebare</button>
+
+    <button type="button" id="urmator" style="display:none;">Următoarea întrebare</button>
     <button type="submit" id="trimite" style="display:none;">Trimite</button>
   </form>
 
@@ -50,19 +70,37 @@
 
     let index = 0;
     const raspunsuri = {};
-    const intrebare = document.getElementById('intrebare');
     const form = document.getElementById('checklistForm');
+    const introFields = document.getElementById('introFields');
+    const questionContainer = document.getElementById('question-container');
     const urmator = document.getElementById('urmator');
     const trimite = document.getElementById('trimite');
-    const radioButtons = form.querySelectorAll('input[name="raspuns"]');
+    const intrebare = document.getElementById('intrebare');
 
     function afiseazaIntrebare() {
       const curenta = intrebari[index];
       intrebare.textContent = curenta.text;
-      radioButtons.forEach(rb => rb.checked = false);
+      form.querySelectorAll('input[name="raspuns"]').forEach(rb => rb.checked = false);
     }
 
-    afiseazaIntrebare();
+    document.getElementById('startChecklist').addEventListener('click', () => {
+      const nume = document.getElementById('nume').value.trim();
+      const tura = document.getElementById('tura').value;
+
+      if (!nume || !tura) {
+        alert('Completează numele și selectează tura!');
+        return;
+      }
+
+      raspunsuri['nume'] = nume;
+      raspunsuri['tura'] = tura;
+
+      introFields.style.display = 'none';
+      questionContainer.style.display = 'block';
+      urmator.style.display = 'inline-block';
+
+      afiseazaIntrebare();
+    });
 
     urmator.addEventListener('click', () => {
       const checked = form.querySelector('input[name="raspuns"]:checked');
@@ -77,7 +115,11 @@
         urmator.style.display = 'none';
         trimite.style.display = 'inline-block';
         intrebare.textContent = "Gata! Trimite răspunsurile.";
-        form.querySelectorAll('label').forEach(label => label.style.display = 'none');
+        form.querySelectorAll('label').forEach(label => {
+          if (label.querySelector('input[name="raspuns"]')) {
+            label.style.display = 'none';
+          }
+        });
       }
     });
 
