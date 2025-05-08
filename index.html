@@ -6,21 +6,25 @@
   <style>
     body {
       font-family: system-ui, sans-serif;
-      max-width: 500px;
+      max-width: 420px;
       margin: 2rem auto;
       padding: 1rem;
+      font-size: 1.1rem;
     }
+
     label, input, select, textarea {
       display: block;
       margin-bottom: 15px;
       font-size: 1rem;
       width: 100%;
     }
+
     button {
       padding: 10px 20px;
       font-size: 1rem;
       margin-top: 10px;
     }
+
     .buton-raspuns {
       padding: 1rem;
       margin: 0.5rem 1rem 1rem 0;
@@ -32,24 +36,35 @@
       min-width: 100px;
       transition: transform 0.1s ease-in-out;
     }
+
     .buton-raspuns:hover {
       transform: scale(1.05);
     }
+
     .verde {
       background-color: #4CAF50;
       color: white;
     }
+
     .rosu {
       background-color: #f44336;
       color: white;
     }
+
     .buton-raspuns.selected {
       outline: 3px solid #000;
     }
+
     #mesajConfirmare {
       margin-top: 15px;
       color: green;
       font-weight: bold;
+    }
+
+    #progress {
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #333;
     }
   </style>
 </head>
@@ -75,6 +90,7 @@
 
     <!-- Întrebări -->
     <div id="question-container" style="display:none;">
+      <p id="progress"></p>
       <p id="intrebare"></p>
       <div id="raspunsuri">
         <button type="button" class="buton-raspuns verde" data-valoare="Da">DA</button>
@@ -88,7 +104,6 @@
       <textarea name="comentarii" id="comentarii" rows="4"></textarea>
     </div>
 
-    <button type="button" id="urmator" style="display:none;">Următoarea întrebare</button>
     <button type="submit" id="trimite" style="display:none;">Trimite</button>
   </form>
 
@@ -104,21 +119,19 @@
     ];
 
     let index = 0;
-    let raspunsSelectat = null;
     const raspunsuri = {};
     const form = document.getElementById('checklistForm');
     const introFields = document.getElementById('introFields');
     const questionContainer = document.getElementById('question-container');
     const comentariiContainer = document.getElementById('comentariiContainer');
-    const urmator = document.getElementById('urmator');
     const trimite = document.getElementById('trimite');
     const intrebare = document.getElementById('intrebare');
+    const progress = document.getElementById('progress');
 
     function afiseazaIntrebare() {
       const curenta = intrebari[index];
       intrebare.textContent = curenta.text;
-      raspunsSelectat = null;
-      document.querySelectorAll('.buton-raspuns').forEach(b => b.classList.remove('selected'));
+      progress.textContent = `Întrebarea ${index + 1} din ${intrebari.length}`;
     }
 
     document.getElementById('startChecklist').addEventListener('click', () => {
@@ -135,33 +148,24 @@
 
       introFields.style.display = 'none';
       questionContainer.style.display = 'block';
-      urmator.style.display = 'inline-block';
 
       afiseazaIntrebare();
     });
 
     document.querySelectorAll('.buton-raspuns').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.buton-raspuns').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        raspunsSelectat = btn.dataset.valoare;
+        const valoare = btn.dataset.valoare;
+        raspunsuri[intrebari[index].nume] = valoare;
+        index++;
+
+        if (index < intrebari.length) {
+          afiseazaIntrebare();
+        } else {
+          questionContainer.style.display = 'none';
+          comentariiContainer.style.display = 'block';
+          trimite.style.display = 'inline-block';
+        }
       });
-    });
-
-    urmator.addEventListener('click', () => {
-      if (!raspunsSelectat) return alert('Selectează un răspuns!');
-      
-      raspunsuri[intrebari[index].nume] = raspunsSelectat;
-      index++;
-
-      if (index < intrebari.length) {
-        afiseazaIntrebare();
-      } else {
-        questionContainer.style.display = 'none';
-        comentariiContainer.style.display = 'block';
-        urmator.style.display = 'none';
-        trimite.style.display = 'inline-block';
-      }
     });
 
     form.addEventListener('submit', e => {
