@@ -3,18 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>Checklist Schimb de Tură</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    label { display: block; margin-bottom: 10px; }
+    button { padding: 10px 20px; }
+    #mesajConfirmare { margin-top: 15px; color: green; font-weight: bold; }
+  </style>
 </head>
 <body>
   <h1>Checklist Schimb de Tură</h1>
   <form id="checklistForm">
-    <label><input type="checkbox" name="informatii" value="Da"> S-a făcut schimbul de informații?</label><br>
-    <label><input type="checkbox" name="ordine" value="Da"> Au rămas Ordere de Producție deschise?</label><br>
-    <label><input type="checkbox" name="layout" value="Da"> Se respectă layout-ul?</label><br>
-    <label><input type="checkbox" name="5s" value="Da"> 5S este OK?</label><br>
-    <label><input type="checkbox" name="utilaje" value="Da"> Utilajele sunt în stare de funcționare?</label><br><br>
+    <label><input type="checkbox" name="informatii" value="Da"> S-a făcut schimbul de informații?</label>
+    <label><input type="checkbox" name="ordine" value="Da"> Au rămas Ordere de Producție deschise?</label>
+    <label><input type="checkbox" name="layout" value="Da"> Se respectă layout-ul?</label>
+    <label><input type="checkbox" name="5s" value="Da"> 5S este OK?</label>
+    <label><input type="checkbox" name="utilaje" value="Da"> Utilajele sunt în stare de funcționare?</label>
+    <br>
     <button type="submit">Trimite</button>
   </form>
-
   <p id="mesajConfirmare"></p>
 
   <script>
@@ -22,11 +28,12 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
       const data = new FormData(form);
-      fetch('https://script.google.com/macros/s/AKfycbz0E2HNs0tReq-P5RGkSLgEfSE_wdsrnNGcZsyu6FyeDDboEULBrmdm54-HsAgGKh--/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbwyAgCqke7xFw7kpgra9Y7111EeDKhd3rTrvvvshBQNbo9afRlqQI5Rs2eLYLZ7lOhW/exec', {
         method: 'POST',
         body: data
       })
-      .then(response => {
+      .then(response => response.text())
+      .then(text => {
         document.getElementById('mesajConfirmare').innerText = "Checklist trimis cu succes!";
         form.reset();
       })
