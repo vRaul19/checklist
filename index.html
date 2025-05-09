@@ -4,24 +4,23 @@
   <meta charset="UTF-8" />
   <title>Checklist Schimb de Tură</title>
   <style>
-body {
-  font-family: system-ui, sans-serif;
-  max-width: 460px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  font-size: 1.1rem;
-  background-image: url('img/fundal.jpg'); /* sau un URL complet */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: #fff;
-  border-radius: 16px;
-  box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: brightness(0.9);
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 460px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      font-size: 1.1rem;
+      background-image: url('img/fundal.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: #fff;
+      border-radius: 16px;
+      box-sizing: border-box;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: brightness(0.9);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
 
     label, input, select, textarea {
       display: block;
@@ -62,20 +61,31 @@ body {
       color: white;
     }
 
-    .buton-raspuns.selected {
-      outline: 3px solid #000;
-    }
-
     #mesajConfirmare {
       margin-top: 15px;
-      color: green;
+      color: #0f0;
       font-weight: bold;
     }
 
     #progress {
       font-weight: bold;
       margin-bottom: 1rem;
-      color: #333;
+    }
+
+    #butonBeneficii {
+      display: none;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin-top: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #butonBeneficii:hover {
+      background-color: #2980b9;
     }
   </style>
 </head>
@@ -119,6 +129,7 @@ body {
   </form>
 
   <p id="mesajConfirmare"></p>
+  <button id="butonBeneficii" onclick="location.href='beneficii.html'">Vezi beneficiile acestui checklist</button>
 
   <script>
     const intrebari = [
@@ -159,7 +170,6 @@ body {
 
       introFields.style.display = 'none';
       questionContainer.style.display = 'block';
-
       afiseazaIntrebare();
     });
 
@@ -197,6 +207,7 @@ body {
       .then(text => {
         document.getElementById('mesajConfirmare').innerText = "Checklist trimis cu succes!";
         form.style.display = 'none';
+        document.getElementById('butonBeneficii').style.display = 'inline-block';
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
