@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: system-ui, sans-serif;
-      max-width: 500px;
+      max-width: 460px;
       margin: 2rem auto;
       padding: 1.5rem;
       font-size: 1.1rem;
@@ -29,41 +29,10 @@
       width: 100%;
     }
 
-    .buton-actiune {
-      display: flex;
-      gap: 1rem;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-
-    .buton-actiune button,
-    .buton-actiune a {
+    button {
       padding: 10px 20px;
       font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      color: #fff;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    #startChecklist {
-      background-color: #4CAF50;
-    }
-
-    #startChecklist:hover {
-      background-color: #3e8e41;
-    }
-
-    .link-beneficii {
-      background-color: #3498db;
-    }
-
-    .link-beneficii:hover {
-      background-color: #2980b9;
+      margin-top: 10px;
     }
 
     .buton-raspuns {
@@ -127,6 +96,34 @@
       margin-bottom: 0.5rem;
       color: #ffd700;
     }
+
+    .butoane-start {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .butoane-start a,
+    .butoane-start button {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .butoane-start a:hover,
+    .butoane-start button:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 <body>
@@ -145,9 +142,9 @@
         <option value="Tura 3">Tura 3</option>
       </select>
 
-      <div class="buton-actiune">
-        <button type="button" id="startChecklist">Începe Checklist-ul</button>
-        <a class="link-beneficii" href="beneficii.html" target="_blank">Vezi beneficiile</a>
+      <div class="butoane-start">
+        <button type="button" id="startChecklist">Începe checklist-ul</button>
+        <a href="beneficii.html" target="_blank">Vezi beneficiile</a>
       </div>
     </div>
 
@@ -172,7 +169,13 @@
   <div id="mesajConfirmare"></div>
 
   <script>
-    const intrebari = [/* întrebările rămân neschimbate */];
+    const intrebari = [
+      { nume: "ordine", categorie: "5S", text: "Zona de lucru este curată și ordonată?" },
+      { nume: "echipamente", categorie: "Echipamente", text: "Echipamentele funcționează corespunzător?" },
+      { nume: "materiale", categorie: "Materiale", text: "Există suficiente materiale pentru următoarea tură?" },
+      { nume: "incidente", categorie: "Siguranță", text: "Au fost raportate incidente în tură?" },
+      { nume: "predare", categorie: "Comunicare", text: "Informațiile importante au fost transmise?" }
+    ];
 
     let index = 0;
     const raspunsuri = {};
@@ -229,7 +232,7 @@
       for (const cheie in raspunsuri) {
         data.append(cheie, raspunsuri[cheie]);
       }
-      fetch('https://script.google.com/macros/s/.../exec', {
+      fetch('https://script.google.com/macros/s/AKfycbz1AuGImrNWllsIdmEfI1e3ZrqAefkxhfplF81OJgpHoyPeNrQALzOVFZlZYg_oyCjO/exec', {
         method: 'POST',
         body: data
       })
