@@ -96,34 +96,6 @@
       margin-bottom: 0.5rem;
       color: #ffd700;
     }
-
-    .butoane-start {
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .butoane-start a,
-    .butoane-start button {
-      flex: 1;
-      min-width: 120px;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 8px;
-      border: none;
-      background-color: #3498db;
-      color: white;
-      padding: 10px 15px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .butoane-start a:hover,
-    .butoane-start button:hover {
-      background-color: #2980b9;
-    }
   </style>
 </head>
 <body>
@@ -142,10 +114,7 @@
         <option value="Tura 3">Tura 3</option>
       </select>
 
-      <div class="butoane-start">
-        <button type="button" id="startChecklist">Începe checklist-ul</button>
-        <a href="beneficii.html" target="_blank">Vezi beneficiile</a>
-      </div>
+      <button type="button" id="startChecklist">Începe Checklist-ul</button>
     </div>
 
     <div id="question-container" style="display:none;">
@@ -170,11 +139,21 @@
 
   <script>
     const intrebari = [
-      { nume: "ordine", categorie: "5S", text: "Zona de lucru este curată și ordonată?" },
-      { nume: "echipamente", categorie: "Echipamente", text: "Echipamentele funcționează corespunzător?" },
-      { nume: "materiale", categorie: "Materiale", text: "Există suficiente materiale pentru următoarea tură?" },
-      { nume: "incidente", categorie: "Siguranță", text: "Au fost raportate incidente în tură?" },
-      { nume: "predare", categorie: "Comunicare", text: "Informațiile importante au fost transmise?" }
+      { nume: 'schimb_info', categorie: 'Comunicare și continuitate', text: 'S-a făcut schimbul de informații între tura actuală și cea următoare?' },
+      { nume: 'comenzi_urgente', categorie: 'Comunicare și continuitate', text: 'Sunt comenzi sau livrări urgente care trebuie preluate?' },
+      { nume: 'incidente', categorie: 'Comunicare și continuitate', text: 'Sunt incidente sau observații importante care trebuie transmise?' },
+      { nume: 'alimentare_productie', categorie: 'Stocuri și marfă', text: 'Au fost alimentate toate zonele de producție cu marfa necesară?' },
+      { nume: 'lipsuri_stoc', categorie: 'Stocuri și marfă', text: 'Sunt lipsuri sau rupturi de stoc identificate?' },
+      { nume: 'actualizare_stoc', categorie: 'Stocuri și marfă', text: 'S-au actualizat toate fișele de stoc sau sistemul informatic?' },
+      { nume: 'etichetare', categorie: 'Stocuri și marfă', text: 'Produsele din depozit sunt etichetate și amplasate corect?' },
+      { nume: 'receptii', categorie: 'Recepție și expediție', text: 'S-au recepționat toate livrările programate în această tură?' },
+      { nume: 'expedieri_pregatite', categorie: 'Recepție și expediție', text: 'Sunt expedieri sau colete pregătite care trebuie trimise în tura următoare?' },
+      { nume: 'layout_ok', categorie: 'Organizare și curățenie', text: 'Se respectă layout-ul depozitului?' },
+      { nume: 'ordine_5s', categorie: 'Organizare și curățenie', text: 'Zonele de lucru sunt curate și ordonate (5S)?' },
+      { nume: 'deseuri', categorie: 'Organizare și curățenie', text: 'Au fost eliminate sau izolate deșeurile sau ambalajele neconforme?' },
+      { nume: 'echipamente_ok', categorie: 'Siguranță și echipamente', text: 'Sunt echipamentele de manipulare funcționale (lize, stivuitoare)?' },
+      { nume: 'incident_raportat', categorie: 'Siguranță și echipamente', text: 'S-au raportat defecțiuni sau incidente de securitate?' },
+      { nume: 'siguranta', categorie: 'Siguranță și echipamente', text: 'Extinctoarele și căile de evacuare sunt accesibile?' }
     ];
 
     let index = 0;
@@ -251,3 +230,4 @@
   </script>
 </body>
 </html>
+ 
