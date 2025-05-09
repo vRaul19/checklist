@@ -67,8 +67,21 @@
 
     #mesajConfirmare {
       margin-top: 15px;
-      color: lightgreen;
       font-weight: bold;
+      text-align: center;
+    }
+
+    #mesajConfirmare a {
+      color: #ffd700;
+      text-decoration: underline;
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 1.05rem;
+      transition: color 0.3s;
+    }
+
+    #mesajConfirmare a:hover {
+      color: #fff;
     }
 
     #progress {
@@ -122,26 +135,22 @@
     <button type="submit" id="trimite" style="display:none;">Trimite</button>
   </form>
 
-  <p id="mesajConfirmare"></p>
+  <div id="mesajConfirmare"></div>
 
   <script>
     const intrebari = [
       { nume: 'schimb_info', categorie: 'Comunicare și continuitate', text: 'S-a făcut schimbul de informații între tura actuală și cea următoare?' },
       { nume: 'comenzi_urgente', categorie: 'Comunicare și continuitate', text: 'Sunt comenzi sau livrări urgente care trebuie preluate?' },
       { nume: 'incidente', categorie: 'Comunicare și continuitate', text: 'Sunt incidente sau observații importante care trebuie transmise?' },
-
       { nume: 'alimentare_productie', categorie: 'Stocuri și marfă', text: 'Au fost alimentate toate zonele de producție cu marfa necesară?' },
       { nume: 'lipsuri_stoc', categorie: 'Stocuri și marfă', text: 'Sunt lipsuri sau rupturi de stoc identificate?' },
       { nume: 'actualizare_stoc', categorie: 'Stocuri și marfă', text: 'S-au actualizat toate fișele de stoc sau sistemul informatic?' },
       { nume: 'etichetare', categorie: 'Stocuri și marfă', text: 'Produsele din depozit sunt etichetate și amplasate corect?' },
-
       { nume: 'receptii', categorie: 'Recepție și expediție', text: 'S-au recepționat toate livrările programate în această tură?' },
       { nume: 'expedieri_pregatite', categorie: 'Recepție și expediție', text: 'Sunt expedieri sau colete pregătite care trebuie trimise în tura următoare?' },
-
       { nume: 'layout_ok', categorie: 'Organizare și curățenie', text: 'Se respectă layout-ul depozitului?' },
       { nume: 'ordine_5s', categorie: 'Organizare și curățenie', text: 'Zonele de lucru sunt curate și ordonate (5S)?' },
       { nume: 'deseuri', categorie: 'Organizare și curățenie', text: 'Au fost eliminate sau izolate deșeurile sau ambalajele neconforme?' },
-
       { nume: 'echipamente_ok', categorie: 'Siguranță și echipamente', text: 'Sunt echipamentele de manipulare funcționale (lize, stivuitoare)?' },
       { nume: 'incident_raportat', categorie: 'Siguranță și echipamente', text: 'S-au raportat defecțiuni sau incidente de securitate?' },
       { nume: 'siguranta', categorie: 'Siguranță și echipamente', text: 'Extinctoarele și căile de evacuare sunt accesibile?' }
@@ -208,8 +217,11 @@
       })
       .then(response => response.text())
       .then(text => {
-        document.getElementById('mesajConfirmare').innerText = "Checklist trimis cu succes!";
         form.style.display = 'none';
+        document.getElementById('mesajConfirmare').innerHTML = `
+          <p>✅ Checklist trimis cu succes!</p>
+          <p><a href="beneficii.html" target="_blank">Vezi beneficiile completării checklist-ului</a></p>
+        `;
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
@@ -218,3 +230,4 @@
   </script>
 </body>
 </html>
+ 
