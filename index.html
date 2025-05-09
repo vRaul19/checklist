@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <title>Checklist Schimb de Tură</title>
+  <title>Checklist Schimb de Tură - Depozit</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -61,39 +61,34 @@
       color: white;
     }
 
+    .buton-raspuns.selected {
+      outline: 3px solid #000;
+    }
+
     #mesajConfirmare {
       margin-top: 15px;
-      color: #0f0;
+      color: lightgreen;
       font-weight: bold;
     }
 
     #progress {
       font-weight: bold;
       margin-bottom: 1rem;
+      color: #ccc;
     }
 
-    #butonBeneficii {
-      display: none;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
+    .categorie {
+      font-weight: bold;
       font-size: 1rem;
-      margin-top: 20px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #butonBeneficii:hover {
-      background-color: #2980b9;
+      margin-bottom: 0.5rem;
+      color: #ffd700;
     }
   </style>
 </head>
 <body>
-  <h1>Checklist Schimb de Tură</h1>
+  <h1>Checklist Schimb de Tură - Depozit</h1>
 
   <form id="checklistForm">
-    <!-- Introducere -->
     <div id="introFields">
       <label for="nume">Nume:</label>
       <input type="text" name="nume" id="nume" required />
@@ -109,17 +104,16 @@
       <button type="button" id="startChecklist">Începe Checklist-ul</button>
     </div>
 
-    <!-- Întrebări -->
     <div id="question-container" style="display:none;">
       <p id="progress"></p>
+      <p class="categorie" id="categorie"></p>
       <p id="intrebare"></p>
       <div id="raspunsuri">
-        <button type="button" class="buton-raspuns verde" data-valoare="Da">DA</button>
-        <button type="button" class="buton-raspuns rosu" data-valoare="Nu">NU</button>
+        <button type="button" class="buton-raspuns verde" data-valoare="DA">DA</button>
+        <button type="button" class="buton-raspuns rosu" data-valoare="NU">NU</button>
       </div>
     </div>
 
-    <!-- Observații -->
     <div id="comentariiContainer" style="display:none;">
       <label for="comentarii">Observații / Comentarii suplimentare:</label>
       <textarea name="comentarii" id="comentarii" rows="4"></textarea>
@@ -129,15 +123,28 @@
   </form>
 
   <p id="mesajConfirmare"></p>
-  <button id="butonBeneficii" onclick="location.href='beneficii.html'">Vezi beneficiile acestui checklist</button>
 
   <script>
     const intrebari = [
-      { nume: 'informatii', text: 'S-a făcut schimbul de informații?' },
-      { nume: 'ordine', text: 'Au rămas Ordere de Producție deschise?' },
-      { nume: 'layout', text: 'Se respectă layout-ul?' },
-      { nume: '5s', text: '5S este OK?' },
-      { nume: 'utilaje', text: 'Utilajele sunt în stare de funcționare?' }
+      { nume: 'schimb_info', categorie: 'Comunicare și continuitate', text: 'S-a făcut schimbul de informații între tura actuală și cea următoare?' },
+      { nume: 'comenzi_urgente', categorie: 'Comunicare și continuitate', text: 'Sunt comenzi sau livrări urgente care trebuie preluate?' },
+      { nume: 'incidente', categorie: 'Comunicare și continuitate', text: 'Sunt incidente sau observații importante care trebuie transmise?' },
+
+      { nume: 'alimentare_productie', categorie: 'Stocuri și marfă', text: 'Au fost alimentate toate zonele de producție cu marfa necesară?' },
+      { nume: 'lipsuri_stoc', categorie: 'Stocuri și marfă', text: 'Sunt lipsuri sau rupturi de stoc identificate?' },
+      { nume: 'actualizare_stoc', categorie: 'Stocuri și marfă', text: 'S-au actualizat toate fișele de stoc sau sistemul informatic?' },
+      { nume: 'etichetare', categorie: 'Stocuri și marfă', text: 'Produsele din depozit sunt etichetate și amplasate corect?' },
+
+      { nume: 'receptii', categorie: 'Recepție și expediție', text: 'S-au recepționat toate livrările programate în această tură?' },
+      { nume: 'expedieri_pregatite', categorie: 'Recepție și expediție', text: 'Sunt expedieri sau colete pregătite care trebuie trimise în tura următoare?' },
+
+      { nume: 'layout_ok', categorie: 'Organizare și curățenie', text: 'Se respectă layout-ul depozitului?' },
+      { nume: 'ordine_5s', categorie: 'Organizare și curățenie', text: 'Zonele de lucru sunt curate și ordonate (5S)?' },
+      { nume: 'deseuri', categorie: 'Organizare și curățenie', text: 'Au fost eliminate sau izolate deșeurile sau ambalajele neconforme?' },
+
+      { nume: 'echipamente_ok', categorie: 'Siguranță și echipamente', text: 'Sunt echipamentele de manipulare funcționale (lize, stivuitoare)?' },
+      { nume: 'incident_raportat', categorie: 'Siguranță și echipamente', text: 'S-au raportat defecțiuni sau incidente de securitate?' },
+      { nume: 'siguranta', categorie: 'Siguranță și echipamente', text: 'Extinctoarele și căile de evacuare sunt accesibile?' }
     ];
 
     let index = 0;
@@ -148,26 +155,25 @@
     const comentariiContainer = document.getElementById('comentariiContainer');
     const trimite = document.getElementById('trimite');
     const intrebare = document.getElementById('intrebare');
+    const categorie = document.getElementById('categorie');
     const progress = document.getElementById('progress');
 
     function afiseazaIntrebare() {
       const curenta = intrebari[index];
       intrebare.textContent = curenta.text;
+      categorie.textContent = curenta.categorie;
       progress.textContent = `Întrebarea ${index + 1} din ${intrebari.length}`;
     }
 
     document.getElementById('startChecklist').addEventListener('click', () => {
       const nume = document.getElementById('nume').value.trim();
       const tura = document.getElementById('tura').value;
-
       if (!nume || !tura) {
         alert('Completează numele și selectează tura!');
         return;
       }
-
       raspunsuri['nume'] = nume;
       raspunsuri['tura'] = tura;
-
       introFields.style.display = 'none';
       questionContainer.style.display = 'block';
       afiseazaIntrebare();
@@ -178,7 +184,6 @@
         const valoare = btn.dataset.valoare;
         raspunsuri[intrebari[index].nume] = valoare;
         index++;
-
         if (index < intrebari.length) {
           afiseazaIntrebare();
         } else {
@@ -193,13 +198,11 @@
       e.preventDefault();
       const comentarii = document.getElementById('comentarii').value.trim();
       raspunsuri['comentarii'] = comentarii;
-
       const data = new FormData();
       for (const cheie in raspunsuri) {
         data.append(cheie, raspunsuri[cheie]);
       }
-
-      fetch('https://script.google.com/macros/s/AKfycbziJNyfnrDJDgT9f03pWeWgit34pmheXiMv1kJqhYnTcpS3EDfqIR5RDeC7dhNP4VYr/exec', {
+      fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbziJNyfnrDJDgT9f03pWeWgit34pmheXiMv1kJqhYnTcpS3EDfqIR5RDeC7dhNP4VYr/exec', {
         method: 'POST',
         body: data
       })
@@ -207,7 +210,6 @@
       .then(text => {
         document.getElementById('mesajConfirmare').innerText = "Checklist trimis cu succes!";
         form.style.display = 'none';
-        document.getElementById('butonBeneficii').style.display = 'inline-block';
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
