@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: system-ui, sans-serif;
-      max-width: 460px;
+      max-width: 500px;
       margin: 2rem auto;
       padding: 1.5rem;
       font-size: 1.1rem;
@@ -29,20 +29,40 @@
       width: 100%;
     }
 
-    button, .btn-beneficii {
-      padding: 10px 20px;
-      font-size: 1rem;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #3498db;
-      color: white;
-      text-align: center;
-      text-decoration: none;
+    .buton-actiune {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 1rem;
     }
 
-    button:hover, .btn-beneficii:hover {
+    .buton-actiune button,
+    .buton-actiune a {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    #startChecklist {
+      background-color: #4CAF50;
+    }
+
+    #startChecklist:hover {
+      background-color: #3e8e41;
+    }
+
+    .link-beneficii {
+      background-color: #3498db;
+    }
+
+    .link-beneficii:hover {
       background-color: #2980b9;
     }
 
@@ -112,8 +132,6 @@
 <body>
   <h1>Checklist Schimb de Tură - Depozit</h1>
 
-  <a href="beneficii.html" class="btn-beneficii">ℹ️ Vezi beneficiile checklist-ului</a>
-
   <form id="checklistForm">
     <div id="introFields">
       <label for="nume">Nume:</label>
@@ -127,7 +145,10 @@
         <option value="Tura 3">Tura 3</option>
       </select>
 
-      <button type="button" id="startChecklist">Începe Checklist-ul</button>
+      <div class="buton-actiune">
+        <button type="button" id="startChecklist">Începe Checklist-ul</button>
+        <a class="link-beneficii" href="beneficii.html" target="_blank">Vezi beneficiile</a>
+      </div>
     </div>
 
     <div id="question-container" style="display:none;">
@@ -151,7 +172,8 @@
   <div id="mesajConfirmare"></div>
 
   <script>
-    const intrebari = [ /* întrebarele tale aici, neschimbate */ ];
+    const intrebari = [/* întrebările rămân neschimbate */];
+
     let index = 0;
     const raspunsuri = {};
     const form = document.getElementById('checklistForm');
@@ -207,7 +229,7 @@
       for (const cheie in raspunsuri) {
         data.append(cheie, raspunsuri[cheie]);
       }
-      fetch('https://script.google.com/macros/s/YOUR-SCRIPT-ID/exec', {
+      fetch('https://script.google.com/macros/s/.../exec', {
         method: 'POST',
         body: data
       })
