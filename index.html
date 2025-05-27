@@ -243,10 +243,8 @@
       .then(response => response.text())
       .then(text => {
         form.style.display = 'none';
-        document.getElementById('mesajConfirmare').innerHTML = `
-          <p>✅ Checklist trimis cu succes!</p>
-          <p><a href="beneficii.html" target="_blank">Vezi beneficiile completării checklist-ului</a></p>
-        `;
+       document.getElementById('mesajConfirmare').innerHTML = `
+  <p>✅ Checklist trimis cu succes!</p>`;       
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
