@@ -61,10 +61,6 @@
       color: white;
     }
 
-    .buton-raspuns.selected {
-      outline: 3px solid #000;
-    }
-
     #mesajConfirmare {
       margin-top: 15px;
       font-weight: bold;
@@ -104,11 +100,9 @@
       <label for="departament">Departament:</label>
       <select name="departament" id="departament" required>
         <option value="">Selectează departamentul</option>
-        <option value="Receptie">Recepție</option>
-        <option value="Expeditie">Expediție</option>
-        <option value="Stocuri">Stocuri</option>
-        <option value="Aprovizionare">Aprovizionare</option>
-        <option value="Administrativ">Administrativ</option>
+        <option value="Producție">Producție</option>
+        <option value="Calitate">Calitate</option>
+        <option value="Mentenanță">Mentenanță</option>
       </select>
 
       <button type="button" id="startChecklist">Începe Checklist-ul</button>
@@ -175,13 +169,16 @@
       const nume = document.getElementById('nume').value.trim();
       const tura = document.getElementById('tura').value;
       const departament = document.getElementById('departament').value;
+
       if (!nume || !tura || !departament) {
-        alert('Completează toate câmpurile: Nume, Tura și Departament!');
+        alert('Completează toate câmpurile: nume, tură și departament!');
         return;
       }
+
       raspunsuri['nume'] = nume;
       raspunsuri['tura'] = tura;
       raspunsuri['departament'] = departament;
+
       introFields.style.display = 'none';
       questionContainer.style.display = 'block';
       afiseazaIntrebare();
@@ -211,7 +208,7 @@
         data.append(cheie, raspunsuri[cheie]);
       }
 
-      fetch('https://script.google.com/macros/s/AKfycbz1AuGImrNWllsIdmEfI1e3ZrqAefkxhfplF81OJgpHoyPeNrQALzOVFZlZYg_oyCjO/exec', {
+      fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxgBtFXhmIVvKcn5R_DzNXLn6Bg28sYfzBqTNdbtuw0ZTkkijjycm1vhJgTZfLiTBen/exec', {
         method: 'POST',
         body: data
       })
