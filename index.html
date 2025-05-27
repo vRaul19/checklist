@@ -71,19 +71,6 @@
       text-align: center;
     }
 
-    #mesajConfirmare a {
-      color: #ffd700;
-      text-decoration: underline;
-      display: inline-block;
-      margin-top: 1rem;
-      font-size: 1.05rem;
-      transition: color 0.3s;
-    }
-
-    #mesajConfirmare a:hover {
-      color: #fff;
-    }
-
     #progress {
       font-weight: bold;
       margin-bottom: 1rem;
@@ -95,28 +82,6 @@
       font-size: 1rem;
       margin-bottom: 0.5rem;
       color: #ffd700;
-    }
-
-    .butoane-start {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .butoane-start a {
-      background-color: #3498db;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-    }
-
-    .butoane-start a:hover {
-      background-color: #2980b9;
     }
   </style>
 </head>
@@ -136,10 +101,17 @@
         <option value="Tura 3">Tura 3</option>
       </select>
 
-      <div class="butoane-start">
-        <button type="button" id="startChecklist">Începe Checklist-ul</button>
-        <a href="beneficii.html" target="_blank">Vezi beneficiile</a>
-      </div>
+      <label for="departament">Departament:</label>
+      <select name="departament" id="departament" required>
+        <option value="">Selectează departamentul</option>
+        <option value="Receptie">Recepție</option>
+        <option value="Expeditie">Expediție</option>
+        <option value="Stocuri">Stocuri</option>
+        <option value="Aprovizionare">Aprovizionare</option>
+        <option value="Administrativ">Administrativ</option>
+      </select>
+
+      <button type="button" id="startChecklist">Începe Checklist-ul</button>
     </div>
 
     <div id="question-container" style="display:none;">
@@ -202,12 +174,14 @@
     document.getElementById('startChecklist').addEventListener('click', () => {
       const nume = document.getElementById('nume').value.trim();
       const tura = document.getElementById('tura').value;
-      if (!nume || !tura) {
-        alert('Completează numele și selectează tura!');
+      const departament = document.getElementById('departament').value;
+      if (!nume || !tura || !departament) {
+        alert('Completează toate câmpurile: Nume, Tura și Departament!');
         return;
       }
       raspunsuri['nume'] = nume;
       raspunsuri['tura'] = tura;
+      raspunsuri['departament'] = departament;
       introFields.style.display = 'none';
       questionContainer.style.display = 'block';
       afiseazaIntrebare();
@@ -236,6 +210,7 @@
       for (const cheie in raspunsuri) {
         data.append(cheie, raspunsuri[cheie]);
       }
+
       fetch('https://script.google.com/macros/s/AKfycbz1AuGImrNWllsIdmEfI1e3ZrqAefkxhfplF81OJgpHoyPeNrQALzOVFZlZYg_oyCjO/exec', {
         method: 'POST',
         body: data
@@ -243,8 +218,9 @@
       .then(response => response.text())
       .then(text => {
         form.style.display = 'none';
-       document.getElementById('mesajConfirmare').innerHTML = `
-  <p>✅ Checklist trimis cu succes!</p>`;       
+        document.getElementById('mesajConfirmare').innerHTML = `
+          <p>✅ Checklist trimis cu succes!</p>
+        `;
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
