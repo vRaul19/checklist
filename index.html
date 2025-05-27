@@ -96,6 +96,28 @@
       margin-bottom: 0.5rem;
       color: #ffd700;
     }
+
+    .butoane-start {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .butoane-start a {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .butoane-start a:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 <body>
@@ -114,7 +136,10 @@
         <option value="Tura 3">Tura 3</option>
       </select>
 
-      <button type="button" id="startChecklist">Începe Checklist-ul</button>
+      <div class="butoane-start">
+        <button type="button" id="startChecklist">Începe Checklist-ul</button>
+        <a href="beneficii.html" target="_blank">Vezi beneficiile</a>
+      </div>
     </div>
 
     <div id="question-container" style="display:none;">
@@ -230,4 +255,3 @@
   </script>
 </body>
 </html>
- 
