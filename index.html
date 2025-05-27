@@ -10,16 +10,10 @@
       margin: 2rem auto;
       padding: 1.5rem;
       font-size: 1.1rem;
-     
-  background-image: url('https://www.te.com/content/dam/te-com/images/corporate/marketing/global/Marketing-Hero-Rendition-1024x400/factory-automation-robotics-industrial-female-engineer-right-1024-400.jpg/jcr:content/renditions/hero-story.jpg?w=1024');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain; /* sau contain, depinde de efect */
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-
-
+      background-image: url('https://www.te.com/content/dam/te-com/images/corporate/marketing/global/Marketing-Hero-Rendition-1024x400/factory-automation-robotics-industrial-female-engineer-right-1024-400.jpg/jcr:content/renditions/hero-story.jpg?w=1024');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
       color: #fff;
       border-radius: 16px;
       box-sizing: border-box;
@@ -190,7 +184,7 @@
       const curenta = intrebari[index];
       intrebare.textContent = curenta.text;
       categorie.textContent = curenta.categorie;
-      progress.textContent = `Întrebarea ${index + 1} din ${intrebari.length}`;
+      progress.textContent = Întrebarea ${index + 1} din ${intrebari.length};
     }
 
     document.getElementById('startChecklist').addEventListener('click', () => {
@@ -240,12 +234,9 @@
       .then(response => response.text())
       .then(text => {
         form.style.display = 'none';
-        document.getElementById('mesajConfirmare').innerHTML = `<p>✅ Checklist trimis cu succes!</p>`;
+        document.getElementById('mesajConfirmare').innerHTML = <p>✅ Checklist trimis cu succes!</p>;
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
       });
     });
-  </script>
-</body>
-</html>
