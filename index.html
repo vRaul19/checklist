@@ -29,10 +29,33 @@
       width: 100%;
     }
 
-    button {
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button, .link-button {
       padding: 10px 20px;
       font-size: 1rem;
       margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .start-button {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .beneficii-button {
+      background-color: #3498db;
+      color: white;
     }
 
     .buton-raspuns {
@@ -51,20 +74,15 @@
       transform: scale(1.05);
     }
 
-    .verde {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    .rosu {
-      background-color: #f44336;
-      color: white;
-    }
+    .verde { background-color: #4CAF50; color: white; }
+    .rosu { background-color: #f44336; color: white; }
+    .buton-raspuns.selected { outline: 3px solid #000; }
 
     #mesajConfirmare {
       margin-top: 15px;
       font-weight: bold;
       text-align: center;
+      color: #ffd700;
     }
 
     #progress {
@@ -106,7 +124,10 @@
         <option value="Mentenanță">Mentenanță</option>
       </select>
 
-      <button type="button" id="startChecklist">Începe Checklist-ul</button>
+      <div class="button-row">
+        <button type="button" class="start-button" id="startChecklist">Începe Checklist-ul</button>
+        <a href="beneficii.html" target="_blank" class="link-button beneficii-button">Vezi beneficiile</a>
+      </div>
     </div>
 
     <div id="question-container" style="display:none;">
@@ -170,16 +191,13 @@
       const nume = document.getElementById('nume').value.trim();
       const tura = document.getElementById('tura').value;
       const departament = document.getElementById('departament').value;
-
       if (!nume || !tura || !departament) {
-        alert('Completează toate câmpurile: nume, tură și departament!');
+        alert('Completează toate câmpurile!');
         return;
       }
-
       raspunsuri['nume'] = nume;
       raspunsuri['tura'] = tura;
       raspunsuri['departament'] = departament;
-
       introFields.style.display = 'none';
       questionContainer.style.display = 'block';
       afiseazaIntrebare();
@@ -216,9 +234,7 @@
       .then(response => response.text())
       .then(text => {
         form.style.display = 'none';
-        document.getElementById('mesajConfirmare').innerHTML = `
-          <p>✅ Checklist trimis cu succes!</p>
-        `;
+        document.getElementById('mesajConfirmare').innerHTML = `<p>✅ Checklist trimis cu succes!</p>`;
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
