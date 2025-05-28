@@ -246,28 +246,36 @@
       });
     });
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const comentarii = document.getElementById('comentarii').value.trim();
-      raspunsuri['comentarii'] = comentarii;
-      const data = new FormData();
-      for (const cheie in raspunsuri) {
-        data.append(cheie, raspunsuri[cheie]);
-      }
+   form.addEventListener('submit', e => {
+  e.preventDefault();
+  const trimiteBtn = document.getElementById('trimite');
+  trimiteBtn.disabled = true;
+  trimiteBtn.textContent = '⏳ Se trimite...';
+  document.getElementById('mesajConfirmare').textContent = '';
 
-      fetch('https://script.google.com/macros/s/AKfycbxgBtFXhmIVvKcn5R_DzNXLn6Bg28sYfzBqTNdbtuw0ZTkkijjycm1vhJgTZfLiTBen/exec', {
-        method: 'POST',
-        body: data
-      })
-      .then(response => response.text())
-      .then(text => {
-        form.style.display = 'none';
-        document.getElementById('mesajConfirmare').innerHTML = "<p>✅ Checklist trimis cu succes!</p>";
-      })
-      .catch(error => {
-        document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
-      });
-    });
+  const comentarii = document.getElementById('comentarii').value.trim();
+  raspunsuri['comentarii'] = comentarii;
+
+  const data = new FormData();
+  for (const cheie in raspunsuri) {
+    data.append(cheie, raspunsuri[cheie]);
+  }
+
+  fetch('https://script.google.com/macros/s/AKfycbxgBtFXhmIVvKcn5R_DzNXLn6Bg28sYfzBqTNdbtuw0ZTkkijjycm1vhJgTZfLiTBen/exec', {
+    method: 'POST',
+    body: data
+  })
+  .then(response => response.text())
+  .then(text => {
+    form.style.display = 'none';
+    document.getElementById('mesajConfirmare').innerHTML = "<p>✅ Checklist trimis cu succes!</p>";
+  })
+  .catch(error => {
+    trimiteBtn.disabled = false;
+    trimiteBtn.textContent = 'Trimite';
+    document.getElementById('mesajConfirmare').innerText = "⚠️ Eroare la trimitere! Încearcă din nou.";
+  });
+});
   </script>
 </body>
 </html>
