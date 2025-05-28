@@ -4,22 +4,32 @@
   <meta charset="UTF-8" />
   <title>Checklist Schimb de Tură - Depozit</title>
   <style>
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
       font-family: system-ui, sans-serif;
-      max-width: 460px;
-      margin: 2rem auto;
-      padding: 1.5rem;
-      font-size: 1.1rem;
+
       background-image: url('https://www.te.com/content/dam/te-com/images/corporate/marketing/global/Marketing-Hero-Rendition-1024x400/factory-automation-robotics-industrial-female-engineer-right-1024-400.jpg/jcr:content/renditions/hero-story.jpg?w=1024');
       background-size: cover;
       background-repeat: no-repeat;
-      background-position: center;
-      color: #fff;
-      border-radius: 16px;
-      box-sizing: border-box;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-position: center center;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-container {
+      max-width: 460px;
+      width: 90%;
+      background-color: rgba(0, 0, 0, 0.6);
       backdrop-filter: brightness(0.9);
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 16px;
       box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      box-sizing: border-box;
     }
 
     label, input, select, textarea {
@@ -97,58 +107,76 @@
       margin-bottom: 0.5rem;
       color: #ffd700;
     }
+
+    @media (max-width: 600px) {
+      body {
+        background-position: top center;
+        background-size: cover;
+      }
+
+      .form-container {
+        padding: 1rem;
+        border-radius: 12px;
+      }
+
+      .buton-raspuns {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Checklist Schimb de Tură - Depozit</h1>
+  <div class="form-container">
+    <h1>Checklist Schimb de Tură - Depozit</h1>
 
-  <form id="checklistForm">
-    <div id="introFields">
-      <label for="nume">Nume:</label>
-      <input type="text" name="nume" id="nume" required />
+    <form id="checklistForm">
+      <div id="introFields">
+        <label for="nume">Nume:</label>
+        <input type="text" name="nume" id="nume" required />
 
-      <label for="tura">Tura:</label>
-      <select name="tura" id="tura" required>
-        <option value="">Selectează tura</option>
-        <option value="Tura 1">Tura 1</option>
-        <option value="Tura 2">Tura 2</option>
-        <option value="Tura 3">Tura 3</option>
-      </select>
+        <label for="tura">Tura:</label>
+        <select name="tura" id="tura" required>
+          <option value="">Selectează tura</option>
+          <option value="Tura 1">Tura 1</option>
+          <option value="Tura 2">Tura 2</option>
+          <option value="Tura 3">Tura 3</option>
+        </select>
 
-      <label for="departament">Departament:</label>
-      <select name="departament" id="departament" required>
-        <option value="">Selectează departamentul</option>
-        <option value="Depozit">Depozit</option>
-        <option value="Producție">Producție</option>
-        <option value="Calitate">Calitate</option>
-        <option value="Mentenanță">Mentenanță</option>
-      </select>
+        <label for="departament">Departament:</label>
+        <select name="departament" id="departament" required>
+          <option value="">Selectează departamentul</option>
+          <option value="Depozit">Depozit</option>
+          <option value="Producție">Producție</option>
+          <option value="Calitate">Calitate</option>
+          <option value="Mentenanță">Mentenanță</option>
+        </select>
 
-      <div class="button-row">
-        <button type="button" class="start-button" id="startChecklist">Începe Checklist-ul</button>
-        <a href="beneficii.html" target="_blank" class="link-button beneficii-button">Vezi beneficiile</a>
+        <div class="button-row">
+          <button type="button" class="start-button" id="startChecklist">Începe Checklist-ul</button>
+          <a href="beneficii.html" target="_blank" class="link-button beneficii-button">Vezi beneficiile</a>
+        </div>
       </div>
-    </div>
 
-    <div id="question-container" style="display:none;">
-      <p id="progress"></p>
-      <p class="categorie" id="categorie"></p>
-      <p id="intrebare"></p>
-      <div id="raspunsuri">
-        <button type="button" class="buton-raspuns verde" data-valoare="Da">Da</button>
-        <button type="button" class="buton-raspuns rosu" data-valoare="Nu">Nu</button>
+      <div id="question-container" style="display:none;">
+        <p id="progress"></p>
+        <p class="categorie" id="categorie"></p>
+        <p id="intrebare"></p>
+        <div id="raspunsuri">
+          <button type="button" class="buton-raspuns verde" data-valoare="Da">Da</button>
+          <button type="button" class="buton-raspuns rosu" data-valoare="Nu">Nu</button>
+        </div>
       </div>
-    </div>
 
-    <div id="comentariiContainer" style="display:none;">
-      <label for="comentarii">Observații / Comentarii suplimentare:</label>
-      <textarea name="comentarii" id="comentarii" rows="4"></textarea>
-    </div>
+      <div id="comentariiContainer" style="display:none;">
+        <label for="comentarii">Observații / Comentarii suplimentare:</label>
+        <textarea name="comentarii" id="comentarii" rows="4"></textarea>
+      </div>
 
-    <button type="submit" id="trimite" style="display:none;">Trimite</button>
-  </form>
+      <button type="submit" id="trimite" style="display:none;">Trimite</button>
+    </form>
 
-  <div id="mesajConfirmare"></div>
+    <div id="mesajConfirmare"></div>
+  </div>
 
   <script>
     const intrebari = [
@@ -184,7 +212,7 @@
       const curenta = intrebari[index];
       intrebare.textContent = curenta.text;
       categorie.textContent = curenta.categorie;
-      progress.textContent = Întrebarea ${index + 1} din ${intrebari.length};
+      progress.textContent = `Întrebarea ${index + 1} din ${intrebari.length}`;
     }
 
     document.getElementById('startChecklist').addEventListener('click', () => {
@@ -234,9 +262,12 @@
       .then(response => response.text())
       .then(text => {
         form.style.display = 'none';
-        document.getElementById('mesajConfirmare').innerHTML = <p>✅ Checklist trimis cu succes!</p>;
+        document.getElementById('mesajConfirmare').innerHTML = "<p>✅ Checklist trimis cu succes!</p>";
       })
       .catch(error => {
         document.getElementById('mesajConfirmare').innerText = "Eroare la trimitere!";
       });
     });
+  </script>
+</body>
+</html>
